@@ -4,9 +4,9 @@ import os
 class GogoDNARegistry(sp.Contract):
     @staticmethod
     def split(s, sep):
-        prev_idx = sp.local('split1', 0)
-        res = sp.local('split2', [])
-        with sp.for_('split3', sp.range(0, sp.len(s))) as idx:
+        prev_idx = sp.local('pi', 0)
+        res = sp.local('res', [])
+        with sp.for_('itr', sp.range(0, sp.len(s))) as idx:
             with sp.if_(sp.slice(s, idx, 1).open_some() == sep):
                 res.value.push(sp.slice(s, prev_idx.value, sp.as_nat(idx - prev_idx.value)).open_some())
                 prev_idx.value = idx + 1
@@ -15,6 +15,24 @@ class GogoDNARegistry(sp.Contract):
         return res.value.rev()
 
     def __init__(self, admin):
+        metadata_base = {
+            "name": "GOGOs DNA Registry",
+            "description" : "On-chain DNA registry for GOGOs",
+            "version": "1.0.0",
+            "interfaces": ["TZIP-012", "TZIP-016"],
+            "authors": [
+              "0x10 <https://twitter.com/0x00000010>",
+            ],
+            "homepage": "https://gogos.tez.page",
+            "views": [],
+            "source": {
+                "tools": ["0x10"],
+                "location": "https://github.com/0x00000010",
+            },
+        }
+
+        self.init_metadata("metadata", metadata_base)
+
         self.init(
             # dna=sp.map(
             dna=sp.big_map(
@@ -293,18 +311,18 @@ class GogoDNARegistry(sp.Contract):
             admin=admin,
         )
 
-    @sp.onchain_view()
+    @sp.onchain_view(doc='Retrieve the DNA Configuration')
     def get_dna_config(self):
         sp.result(self.data.config)
 
-    @sp.onchain_view()
+    @sp.onchain_view(doc='Retrieve the DNA in String format. Each piece is seperated by an underscore.')
     def get_dna(self, item):
         sp.set_type(item, sp.TNat)
         info = sp.local('info', self.data.dna[item])
         sp.set_type(info.value, sp.TString)
         sp.result(info.value)
 
-    @sp.onchain_view()
+    @sp.onchain_view(doc='Retrieve a named DNA array with a key integer reference.')
     def get_full_dna_keys(self, item):
         sp.set_type(item, sp.TNat)
 
@@ -320,21 +338,41 @@ class GogoDNARegistry(sp.Contract):
 
         sp.result(ret.value)
 
-    @sp.onchain_view()
+    @sp.onchain_view(doc='Retrieve a named DNA array with the value as a String.')
     def get_full_dna_values(self, item):
         sp.set_type(item, sp.TNat)
 
-        dna2 = sp.local('dna2', self.data.dna[item])
-        spl2 = sp.local('spl2', self.split(dna2.value, '_'))
-        ret2 = sp.local('ret2', sp.map())
+        dna = sp.local('dna2', self.data.dna[item])
+        spl = sp.local('spl2', self.split(dna.value, '_'))
+        ret = sp.local('ret2', sp.map())
 
-        i2 = sp.local('i2', 0)
-        with sp.for_ ('xx', spl2.value) as x:
-            ret2.value[self.data.config.pieces[i2.value]] = self.data.traits[i2.value][x]
+        i = sp.local('i2', 0)
+        with sp.for_ ('xx', spl.value) as x:
+            ret.value[self.data.config.pieces[i.value]] = self.data.traits[i.value][x]
 
-            i2.value = i2.value + 1
+            i.value = i.value + 1
 
-        sp.result(ret2.value)
+        sp.result(ret.value)
+
+    @sp.onchain_view(doc='Check if a token has any of a given set of trait IDs')
+    def token_has_trait(self, params):
+        sp.set_type(params, sp.TRecord(
+            item=sp.TNat,
+            trait=sp.TString,
+            vals=sp.TSet(sp.TString),
+        ))
+
+        dna = sp.local('dna3', self.data.dna[params.item])
+        spl = sp.local('spl3', self.split(dna.value, '_'))
+        ret = sp.local('ret3', sp.map())
+
+        i = sp.local('i3', 0)
+        with sp.for_ ('xx', spl.value) as x:
+            ret.value[self.data.config.pieces[i.value]] = x
+
+            i.value = i.value + 1
+
+        sp.result(params.vals.contains(ret.value[params.trait]))
 
     @sp.entry_point()
     def set_dna(self, params):
