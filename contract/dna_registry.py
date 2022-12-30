@@ -317,6 +317,7 @@ class GogoDNARegistry(sp.Contract):
             }),
             admin=admin,
             metadata=metadata,
+            locked=False,
         )
 
     @sp.onchain_view(doc='Retrieve the Trait Configuration')
@@ -407,11 +408,20 @@ class GogoDNARegistry(sp.Contract):
         sp.else:
             sp.result(False)
 
-    @sp.entry_point()
+    @sp.entry_point
     def set_dna(self, params):
+        sp.verify(~ self.data.locked, message = 'REGISTRY_LOCKED')
         sp.verify(self.data.admin == sp.sender, message = 'NOT_ADMIN')
+
         sp.set_type(params, sp.TList(sp.TPair(sp.TNat, sp.TString)))
 
         sp.for item in params:
             sp.set_type(item, sp.TPair(sp.TNat, sp.TString))
             self.data.dna[sp.fst(item)] = sp.snd(item)
+
+    @sp.entry_point
+    def lock(self):
+        sp.verify(~ self.data.locked, message = 'REGISTRY_LOCKED')
+        sp.verify(self.data.admin == sp.sender, message = 'NOT_ADMIN')
+
+        self.data.locked = True

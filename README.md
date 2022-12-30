@@ -111,11 +111,31 @@ Check if a given Token has any of the supplied Traits for a given Trait type
 
 Will return True if the token has any of the matching values for the given trait.
 
+There can be multiple trait values with the same name, for example hair: Blue hair has several markers, so to check if a GOGO has blue hair you should call
+
+`token_has_trait(token=1,trait='hair',vals={'2','7','12','101'})`
+
+Another example to check if a GOGO has an accessory:
+
+`token_has_trait(token=1,trait='accessory',vals={'1','2','3','106','108','109','110'})` will return true if the GOGO has any of those accessories.
+
+You can see the trait map in the contract storage for the values you need for your use case.
+
+#### Get Trait Name by ID
+
+`trait_key_value('body','5')` will return `Dinosaur`
+
+#### Check if a given token is a mythic GOGO
+
+`is_mythic(1)` will return False
+
+`is_mythic(786)` will return True
+
 ### Forking
 
 If you own or manage an existing Tezos FA2 collection you may use this repository to create your own on-chain dna trait registry.
 
-You only need to deploy this if you need to access trait information about a specific collection on-chain inside other contracts, or if you want to make this information available to other third-parties on-chain for any reason.
+You only need to deploy this if you need to access trait information about a specific collection on-chain inside other contracts, or if you want to make this information available to other third-parties on-chain.
 
 Priming the DNA data is a very expensive operation, and costs about 0.01tz per DNA entry, meaning seeding the GOGOs DNA (5555 pieces) to mainnet costs around 55tz split across multiple batch operations. This only has to be done once though.
 
@@ -123,17 +143,19 @@ If you're deploying your own DNA library then you need to modify the contract wi
 
 The traits are hard-coded at contract origination and there are no entrypoints to update this information with. If you're making a dynamic DNA bank you will need to add this functionality yourself.
 
-#### Key Changes
+#### Key Required Changes
 
-When modifying this for your own collection you must make changes to the dna_registry.py contract.
+When modifying this for your own collection you must make changes to the `contract/dna_registry.py` file.
 
 - Set your own metadata in the metadata_base value
-- Define the `length` of your dna string
+- Define the exact `length` of your dna string
 - Define the trait `pieces` and their order in the dna sequence
-- Define a map for each dna trait to the available trait values
+- Define the map for each dna trait to the available trait values
 - Define your `mythic` dna markers
 
-You must also configure your environment with the correct wallet, key etc.
+You must also configure your environment with the correct wallet, key etc. and must create your own DNA mapping based on your collection traits and associated dna.json file.
+
+The `contract/tests.py` file must also be updated to match your trait configuration.
 
 If you modify the `metadata_base` value a new file will be generated and pinned to ipfs with your nft.storage STORAGE_API_KEY and the contract will be recompiled with this new value before origination when you run `compile.sh`
 
@@ -184,3 +206,7 @@ In the case of GOGOs the threshold is '100' and any DNA trait ID above that numb
 Once the contract is deployed you can prime it with all of your DNA.
 
 This is a *very expensive operation* so be sure that you've done all of your teting on ghostnet before performing this operation on mainnet.
+
+You can call `./prime.sh <network> <contract>` to upload the contents of your `dna/dna.json` file to the contract you originated.
+
+This is a multi-step operation. If your token count is beyond a certain threshold and you're deploying with a ledger hardware wallet you will have to confirm each transaction on your device.
