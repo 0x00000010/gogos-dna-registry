@@ -1,7 +1,7 @@
 import dna from '../dna/dna.json' assert { type: "json" }
 import { config } from './config.js'
 
-const batchSize = 800
+const batchSize = 795
 
 const chunk = (obj, size) => {
   // This prevents infinite loops
