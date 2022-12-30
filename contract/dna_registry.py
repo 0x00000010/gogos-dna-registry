@@ -14,12 +14,12 @@ class GogoDNARegistry(sp.Contract):
             res.value.push(sp.slice(s, prev_idx.value, sp.as_nat(sp.len(s) - prev_idx.value)).open_some())
         return res.value.rev()
 
-    def __init__(self, admin):
+    def __init__(self, admin, metadata):
         metadata_base = {
-            "name": "GOGOs DNA Registry",
-            "description" : "On-chain DNA registry for GOGOs",
+            "name": "GOGOs On-Chain DNA Registry",
+            "description" : "DNA registry for the GOGOs on mainnet contract KT1SyPgtiXTaEfBuMZKviWGNHqVrBBEjvtfQ",
             "version": "1.0.0",
-            "interfaces": ["TZIP-012", "TZIP-016"],
+            "interfaces": ["TZIP-016"],
             "authors": [
               "0x10 <https://twitter.com/0x00000010>",
             ],
@@ -39,13 +39,27 @@ class GogoDNARegistry(sp.Contract):
                 l={},
                 # The ID of the token
                 tkey=sp.TNat,
-                # The DNA sequence string, like 0_1_2_3_4_5_6_7_8
+                # The DNA sequence string, like 0_1_2_3_4_5_6_7_8_9
                 tvalue=sp.TString,
             ),
             config=sp.record(
                 # How many pieces in a DNA strand?
                 length=sp.nat(10),
-                # Map of pieces, must match length
+                # Describe the mythic GOGOs
+                # Their DNA is like: 101_101_101_101_101_101_101_101_101_101
+                mythics=sp.map({
+                    '101': 'Aokuma',
+                    '102': 'Maung',
+                    '103': 'Reaper',
+                    '104': 'Chief',
+                    '105': 'Cyborgia',
+                    '106': 'Bunny Scout',
+                    '107': 'Cyberjunk Droid',
+                    '108': 'Builder A',
+                    '109': 'Demon Alburn',
+                    '110': 'Agent 7734',
+                }),
+                # Map of pieces, must match length and be in order
                 pieces=sp.map({
                     0: 'left_arm',
                     1: 'left_hand',
@@ -61,8 +75,8 @@ class GogoDNARegistry(sp.Contract):
             ),
             # A single entry per DNA sequence, in order
             traits=sp.map({
-                # Left Arm
-                0: sp.map({
+                'left_arm': sp.map({
+                    # regular
                     '0': 'None',
                     '1': 'Hoodie',
                     '2': 'Space',
@@ -72,6 +86,7 @@ class GogoDNARegistry(sp.Contract):
                     '6': 'Denim',
                     '7': 'Zombie',
                     '8': 'Mech',
+                    # mythics
                     '101': 'Aokuma',
                     '102': 'Maung',
                     '103': 'Reaper',
@@ -83,8 +98,7 @@ class GogoDNARegistry(sp.Contract):
                     '109': 'Demon Alburn',
                     '110': 'Agent 7734',
                 }),
-                # Left Hand
-                1: sp.map({
+                'left_hand': sp.map({
                     '0': 'Flames',
                     '1': 'Dagger',
                     '2': 'Phone',
@@ -111,7 +125,7 @@ class GogoDNARegistry(sp.Contract):
                     '110': 'Heart',
                 }),
                 # Body
-                2: sp.map({
+                'body': sp.map({
                     '0': 'Hoodie',
                     '1': 'Space Jacket',
                     '2': 'Chef',
@@ -134,8 +148,7 @@ class GogoDNARegistry(sp.Contract):
                     '109': 'Demon Alburn',
                     '110': 'Agent 7734',
                 }),
-                # Head
-                3: sp.map({
+                'head': sp.map({
                     '0': 'Flushed',
                     '1': 'Space Cadet',
                     '2': 'Demon',
@@ -165,8 +178,7 @@ class GogoDNARegistry(sp.Contract):
                     '109': 'Demon Alburn',
                     '110': 'Agent 7734',
                 }),
-                # Face
-                4: sp.map({
+                'face': sp.map({
                     '0': 'None',
                     '1': 'Happy',
                     '2': 'Angry',
@@ -197,8 +209,7 @@ class GogoDNARegistry(sp.Contract):
                     '109': 'Demon Alburn',
                     '110': 'Agent 7734',
                 }),
-                # Hat
-                5: sp.map({
+                'hat': sp.map({
                     '0': 'None',
                     '1': 'Bowler',
                     '2': 'Crown',
@@ -218,8 +229,7 @@ class GogoDNARegistry(sp.Contract):
                     '109': 'None',
                     '110': 'None',
                 }),
-                # Bling
-                6: sp.map({
+                'bling': sp.map({
                     '0': 'None',
                     '1': 'Chain',
                     '2': 'Sword',
@@ -237,8 +247,7 @@ class GogoDNARegistry(sp.Contract):
                     '109': 'None',
                     '110': 'None',
                 }),
-                # Hair
-                7: sp.map({
+                'hair': sp.map({
                     '0': 'None',
                     '1': 'Bowl',
                     '2': 'Blue',
@@ -267,8 +276,7 @@ class GogoDNARegistry(sp.Contract):
                     '109': 'None',
                     '110': 'Black',
                 }),
-                # Accessory
-                8: sp.map({
+                'accessory': sp.map({
                     '0': 'None',
                     '1': 'Headset',
                     '2': 'Red Scarf',
@@ -290,8 +298,7 @@ class GogoDNARegistry(sp.Contract):
                     '109': 'Sweatband',
                     '110': 'Headband',
                 }),
-                # Aura
-                9: sp.map({
+                'aura': sp.map({
                     '0': 'Yellow',
                     '1': 'Blue',
                     '2': 'Red',
@@ -309,7 +316,12 @@ class GogoDNARegistry(sp.Contract):
                 })
             }),
             admin=admin,
+            metadata=metadata,
         )
+
+    @sp.onchain_view(doc='Retrieve the Trait Configuration')
+    def get_trait_config(self):
+        sp.result(self.data.traits)
 
     @sp.onchain_view(doc='Retrieve the DNA Configuration')
     def get_dna_config(self):
@@ -348,7 +360,7 @@ class GogoDNARegistry(sp.Contract):
 
         i = sp.local('i2', 0)
         with sp.for_ ('xx', spl.value) as x:
-            ret.value[self.data.config.pieces[i.value]] = self.data.traits[i.value][x]
+            ret.value[self.data.config.pieces[i.value]] = self.data.traits[self.data.config.pieces[i.value]][x]
 
             i.value = i.value + 1
 
@@ -357,12 +369,12 @@ class GogoDNARegistry(sp.Contract):
     @sp.onchain_view(doc='Check if a token has any of a given set of trait IDs')
     def token_has_trait(self, params):
         sp.set_type(params, sp.TRecord(
-            item=sp.TNat,
+            token=sp.TNat,
             trait=sp.TString,
             vals=sp.TSet(sp.TString),
         ))
 
-        dna = sp.local('dna3', self.data.dna[params.item])
+        dna = sp.local('dna3', self.data.dna[params.token])
         spl = sp.local('spl3', self.split(dna.value, '_'))
         ret = sp.local('ret3', sp.map())
 
@@ -374,6 +386,27 @@ class GogoDNARegistry(sp.Contract):
 
         sp.result(params.vals.contains(ret.value[params.trait]))
 
+    @sp.onchain_view(doc='Get the String value of a given trait ID')
+    def trait_key_value(self, params):
+        sp.set_type(params, sp.TRecord(
+            trait=sp.TString,
+            key=sp.TString,
+        ))
+
+        sp.result(self.data.traits[params.trait][params.key])
+
+    @sp.onchain_view(doc='Check if a GOGO is Mythic')
+    def is_mythic(self, item):
+        sp.set_type(item, sp.TNat)
+
+        dna = sp.local('dna4', self.data.dna[item])
+        spl = sp.local('spl4', self.split(dna.value, '_'))
+
+        with sp.match_cons(spl.value) as x:
+            sp.result(self.data.config.mythics.contains(x.head))
+        sp.else:
+            sp.result(False)
+
     @sp.entry_point()
     def set_dna(self, params):
         sp.verify(self.data.admin == sp.sender, message = 'NOT_ADMIN')
@@ -382,8 +415,3 @@ class GogoDNARegistry(sp.Contract):
         sp.for item in params:
             sp.set_type(item, sp.TPair(sp.TNat, sp.TString))
             self.data.dna[sp.fst(item)] = sp.snd(item)
-
-
-sp.add_compilation_target("GogoDNARegistry_comp", GogoDNARegistry(
-    admin = sp.address("tz1cxvWkkzkvKQz6Y81n2FUrxtX2pjtu9ziS")
-))
