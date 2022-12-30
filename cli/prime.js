@@ -9,15 +9,12 @@ import {
 
 const boot = async () => {
   console.log('[*] Preparing to upload DNA')
-  console.log(config)
 
   const tezos = await getTezosLedger()
 
   const mustProcess = process.argv.slice(2)
 
   const contractAddress = mustProcess[0]
-
-  console.log(`[*] Loading contract ${contractAddress}`)
 
   tezos.contract.at(contractAddress, tzip16).then(
     async contract => {

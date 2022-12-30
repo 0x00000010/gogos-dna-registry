@@ -1,11 +1,9 @@
 import dna from '../dna/dna.json' assert { type: "json" }
+import { config } from './config.js'
 
-const batchSize = 556
-
-// console.log(dna, batchSize)
+const batchSize = 800
 
 const chunk = (obj, size) => {
-  console.log(Object.keys(obj))
   // This prevents infinite loops
   if (size < 1) throw new Error('Size must be positive')
 
@@ -25,23 +23,34 @@ const getEntry = (id) => {
 }
 
 const prepareBatch = (ids) => {
-  const result = {}
+  const result = []
   for (let id of ids) {
-    result[id] = getEntry(id)
+    result.push([parseInt(id), getEntry(id)])
   }
   return result
 }
 
 const send = async (contract, tezos) => {
   const batches = chunk(dna, batchSize)
-  console.log(batches,batches.length)
   for (let x = 0; x < batches.length; x++) {
     const payload = prepareBatch(batches[x])
-    console.log('payload:', payload)
+
+    const batch = tezos.contract.batch()
+    const transferOp = await batch
+      .withContractCall(
+        contract.methods.set_dna(payload)
+      ).send()
+      .catch(e => console.log(e))
+
+    const transfered = await transferOp.confirmation()
+    console.log(`[i] Confirmation ${x + 1} of ${batches.length}: ${transfered}`)
   }
 }
 
 export const uploadDNA = async (tezos, contract) => {
   console.log('[*] Uploading DNA')
+  if (config.useLedger) {
+    console.log('[i] Please confirm the transaction(s) on your ledger')
+  }
   await send(contract, tezos)
 }

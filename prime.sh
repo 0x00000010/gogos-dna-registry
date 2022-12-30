@@ -21,4 +21,6 @@ echo "[i] Network: $COMP_NETWORK"
 echo "[i] Contract: $COMP_CONTRACT"
 export $(cat $COMP_NETWORK.env | xargs)
 
+export NODE_NO_WARNINGS=1
+
 node cli/prime.js $COMP_CONTRACT
