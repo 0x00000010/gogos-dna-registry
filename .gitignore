@@ -2,4 +2,5 @@ compile
 node_modules
 *.tmp
 *.env
+*.bak
 !example.env
