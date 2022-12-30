@@ -142,6 +142,13 @@ def test_registry():
         vals={'10'},
     )), False)
 
+    # Check if a token has a given trait (failing, multiple)
+    scenario.verify_equal(env['contract'].token_has_trait(sp.record(
+        token=1,
+        trait='body',
+        vals={'10','11','12'},
+    )), False)
+
     # Get name of a trait
     scenario.verify_equal(env['contract'].trait_key_value(sp.record(
         trait='body',
