@@ -1,20 +1,20 @@
 # GOGOs DNA Registry
 
-This contract stores the DNA information for GOGOs. When GOGOs were released there was no such thing as an "on-chain view" on Tezos and having this information availble on-chain is a key part of the long-term GOGOs development goals.
+This contract stores the DNA information for GOGOs. When GOGOs were released there was no such thing as an "on-chain view" on Tezos and having this information available on-chain is a key part of the long-term GOGOs development goals.
 
 This repository creates a contract that provides a set of on-chain views regarding the unique DNA string associated with each GOGO.
 
-This DNA was originally used to select the source images when generating the GOGOs and is available inside each GOGOs offchain TZIP-21 metadata.
+This DNA was originally used to select the source images when generating the GOGOs and is available inside each GOGOs off-chain TZIP-21 metadata.
 
-This contract brings additional metadata on-chain that complements and subtly augments the existing offchain metadata.
+This contract brings additional metadata on-chain that complements and subtly augments the existing off-chain metadata.
 
-### Differences from GOGOs TZIP21 / offchain meta
+### Differences from GOGOs TZIP21 / off-chain meta
 
 There are small differences between the "traits" shown on-chain and the ones that ended up in the final off-chain metadata.
 
-The DNA values represents the "before" generation state of the GOGOs, and the final metadata shows their finshed state.
+The DNA values represents the "before" generation state of the GOGOs, and the final metadata shows their finished state.
 
-The main difference is that the DNA shows what's in the *left* hand _even if the left hand is out of the frame_, and the offchain meta also shows details of the "tool" which the on-chain DNA does not keep track of and represents so-called _hidden traits_ for GOGOs where you cannot see their left hand.
+The main difference is that the DNA shows what's in the *left* hand _even if the left hand is out of the frame_, and the off-chain meta also shows details of the "tool" which the on-chain DNA does not keep track of and represents so-called _hidden traits_ for GOGOs where you cannot see their left hand.
 
 GOGOs selected their own "tools" (if any) as seen in the TZIP21 metadata at the end of their generation function and their input DNA did not impact their choice of tool, meaning the DNA does not show what is in the GOGOs *right* hand.
 
@@ -133,7 +133,7 @@ You can see the trait map in the contract storage for the values you need for yo
 
 ### Forking
 
-If you own or manage an existing Tezos FA2 collection you may use this repository to create your own on-chain dna trait registry.
+If you own or manage an existing Tezos FA2 collection you may use this repository to create your own on-chain DNA trait registry.
 
 You only need to deploy this if you need to access trait information about a specific collection on-chain inside other contracts, or if you want to make this information available to other third-parties on-chain.
 
@@ -153,11 +153,11 @@ When modifying this for your own collection you must make changes to the `contra
 - Define the map for each dna trait to the available trait values
 - Define your `mythic` dna markers
 
-You must also configure your environment with the correct wallet, key etc. and must create your own DNA mapping based on your collection traits and associated dna.json file.
+You must also configure your environment with the correct wallet, key etc. and must create your own DNA mapping based on your collection traits and associated   `dna/dna.json` file.
 
 The `contract/tests.py` file must also be updated to match your trait configuration.
 
-If you modify the `metadata_base` value a new file will be generated and pinned to ipfs with your nft.storage STORAGE_API_KEY and the contract will be recompiled with this new value before origination when you run `compile.sh`
+If you modify the `metadata_base` value a new file will be generated and pinned to ipfs with your nft.storage `STORAGE_API_KEY` and the contract will be recompiled with this new value before origination when you run `compile.sh`
 
 ### Configure Environment
 
@@ -167,7 +167,7 @@ You need to add an admin wallet address and an NFT.storage key and set the netwo
 
 You can create a `mainnet` env when you're ready to go to production.
 
-All `*.env` files are ignored by version control so you can't accidently commit secrets.
+All `*.env` files are ignored by version control so you can't accidentally commit secrets.
 
 ### Deploying
 
@@ -185,7 +185,7 @@ This will not register any DNA it just compiles and originates a new contract.
 
 If the COMP_USE_LEDGER value is set to 0 (e.g. non-mainnet deployments like ghostnet) will use whatever the `COMP_ADMIN_KEY` value in the env file is when originating. You can get this value from a testnet wallet faucet file.
 
-If the COMP_USE_LEDGER value is set to 1 then this key is ignored during orignation and you will need to check your connected ledger and approve each transaction there. You must make sure the COMP_ADMIN wallet address matches the ledger, and the correct COMP_LEDGER_PATH is set in your env file (default wallet for Tezos on ledger is `44'/1729'/0'/0` and subsequent wallets created in ledger live are `44'/1729'/1'/0` then `44'/1729'/2'/0` etc)
+If the COMP_USE_LEDGER value is set to 1 then this key is ignored during origination and you will need to check your connected ledger and approve each transaction there. You must make sure the `COMP_ADMIN` wallet address matches the ledger, and the correct `COMP_LEDGER_PATH` is set in your env file (default wallet for Tezos on ledger is `44'/1729'/0'/0` and subsequent wallets created in ledger live are `44'/1729'/1'/0` then `44'/1729'/2'/0` etc)
 
 All `mainnet` deployments should happen through a ledger hardware wallet only.
 
@@ -193,19 +193,19 @@ All `mainnet` deployments should happen through a ledger hardware wallet only.
 
 During the `compile.sh` process the script will check if new TZIP16 metadata has been generated or not.
 
-If new metadata is generated (ie you change the contract tzip16 metadata) then a new IPFS CID will be generated and pinned to ipfs and filecoin using https://nft.storage. You need to add a free key to the `STORAGE_API_KEY` value in your selected .env file. See https://nft.storage/docs/quickstart/#get-an-api-token for information on how to get this key. The selected `.env` file will be updated with the new `COMP_TZIP16` value.
+If new metadata is generated (i.e. you change the contract tzip16 metadata) then a new IPFS CID will be generated and pinned to ipfs and filecoin using https://nft.storage. You need to add a free key to the `STORAGE_API_KEY` value in your selected .env file. See https://nft.storage/docs/quickstart/#get-an-api-token for information on how to get this key. The selected `.env` file will be updated with the new `COMP_TZIP16` value.
 
 ### Mythics
 
-To define a mythic GOGO, such as Aukouma (#786) the DNA is set to a repeating pattern of the same number 101 with the resulting DNA being 101_101_101_101_101_101_101_101_101_101
+To define a mythic GOGO, such as Aukouma (#786) the DNA is set to a repeating pattern of the same number 101 with the resulting DNA being `101_101_101_101_101_101_101_101_101_101`
 
-In the case of GOGOs the threshold is '100' and any DNA trait ID above that number is considered mythic. If your collection has more than 100 traits then increse this value to 1000 and make the adjustment in the contract. All mythics must be defined in the contract.
+In the case of GOGOs the threshold is '100' and any DNA trait ID above that number is considered mythic. If your collection has more than 100 traits then increase this value to 1000 and make the adjustment in the contract. All mythics must be defined in the contract.
 
 ### Priming
 
 Once the contract is deployed you can prime it with all of your DNA.
 
-This is a *very expensive operation* so be sure that you've done all of your teting on ghostnet before performing this operation on mainnet.
+This is a *very expensive operation* so be sure that you've done all of your testing on ghostnet before performing this operation on mainnet.
 
 You can call `./prime.sh <network> <contract>` to upload the contents of your `dna/dna.json` file to the contract you originated.
 
@@ -213,4 +213,6 @@ This is a multi-step operation. If your token count is beyond a certain threshol
 
 ### Why is the DNA not a big_map?
 
-Deployment costs are triple to bigmaps with this contract. Instead of costing ~42 tez for the GOGOs DNA priming operation across 5555 tokens it's around ~126tz so the choice comes from deployment efficiency
+Deployment costs are triple to bigmaps with this contract. Instead of costing ~42 tez for the GOGOs DNA priming operation across 5555 tokens it's around ~126tz so the choice comes from deployment efficiency.
+
+You can change it to a big_map in the `contract/dna_registry.py` file if you don't mind paying extra to have the info in a big_map.

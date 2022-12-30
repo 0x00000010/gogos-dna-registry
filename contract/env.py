@@ -2,7 +2,6 @@ import smartpy as sp
 import os
 
 print('[*] ADMIN: ' + os.environ['COMP_ADMIN'])
-# print('[*] TZIP-16: ' + os.environ['COMP_TZIP16'])
 
 class Env_config:
     admin = sp.address(os.environ['COMP_ADMIN'])
