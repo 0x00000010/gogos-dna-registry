@@ -1,0 +1,26 @@
+{
+  "name": "gogos-dna-registry",
+  "version": "1.0.0",
+  "description": "On-chain registry for GOGOs DNA information",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0x00000010/gogos-dna-registry.git"
+  },
+  "keywords": [
+    "gogos"
+  ],
+  "author": "0x10",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "bugs": {
+    "url": "https://github.com/0x00000010/gogos-dna-registry/issues"
+  },
+  "homepage": "https://github.com/0x00000010/gogos-dna-registry#readme",
+  "dependencies": {
+    "@ledgerhq/hw-transport-node-hid": "^6.27.9",
+    "@taquito/ledger-signer": "^15.0.1",
+    "@taquito/signer": "^15.0.1",
+    "@taquito/taquito": "^15.0.1",
+    "@taquito/tzip16": "^15.0.1"
+  }
+}
