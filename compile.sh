@@ -16,6 +16,11 @@ if [ ! -f ~/smartpy-cli/SmartPy.sh ]; then
     exit 1
 fi
 
+if [ ! -d node_modules ]; then
+    echo "Dependencies not installed, run 'npm install' first..."
+    exit 1
+fi
+
 echo "[*] Prepare DNA Registry"
 echo "[i] Network: $COMP_NETWORK"
 export $(cat $COMP_NETWORK.env | xargs)
