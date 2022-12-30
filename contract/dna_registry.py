@@ -34,8 +34,8 @@ class GogoDNARegistry(sp.Contract):
         self.init_metadata("metadata", metadata_base)
 
         self.init(
-            # dna=sp.map(
-            dna=sp.big_map(
+            dna=sp.map(
+            # dna=sp.big_map(
                 l={},
                 # The ID of the token
                 tkey=sp.TNat,
