@@ -8,6 +8,11 @@ This DNA was originally used to select the source images when generating the GOG
 
 This contract brings additional metadata on-chain that complements and subtly augments the existing off-chain metadata.
 
+## Contract Address
+
+Mainnet:
+Ghostnet: KT1HDzMoKPK75p4jYL4oVivP3yfJr138cq7e
+
 ### Differences from GOGOs TZIP21 / off-chain meta
 
 There are small differences between the "traits" shown on-chain and the ones that ended up in the final off-chain metadata.
