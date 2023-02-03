@@ -216,6 +216,30 @@ You can call `./prime.sh <network> <contract>` to upload the contents of your `d
 
 This is a multi-step operation. If your token count is beyond a certain threshold and you're deploying with a ledger hardware wallet you will have to confirm each transaction on your device.
 
+### Generating dna.json
+
+The file looks like this:
+
+```
+{
+  "1": [
+    0,
+    4,
+    9,
+    14,
+    13,
+    4,
+    3,
+    7,
+    1,
+    2
+  ],
+  // all entries
+}
+```
+
+where "1" is token ID 1 and the values are just the defined marker IDs in an array that matches your contract trait definition.
+
 ### Why is the DNA not a big_map?
 
 Deployment costs are triple to bigmaps with this contract. Instead of costing ~42 tez for the GOGOs DNA priming operation across 5555 tokens it's around ~126tz so the choice comes from deployment efficiency.
