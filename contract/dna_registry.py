@@ -1,7 +1,7 @@
 import smartpy as sp
 import os
 
-class GogoDNARegistry(sp.Contract):
+class DNARegistry(sp.Contract):
     @staticmethod
     def split(s, sep):
         prev_idx = sp.local('pi', 0)
@@ -344,7 +344,7 @@ class GogoDNARegistry(sp.Contract):
         ret = sp.local('ret', sp.map())
 
         i = sp.local('i', 0)
-        with sp.for_ ('xx', spl.value) as x:
+        with sp.for_ ('x', spl.value) as x:
             ret.value[self.data.config.pieces[i.value]] = x
 
             i.value = i.value + 1
@@ -355,12 +355,12 @@ class GogoDNARegistry(sp.Contract):
     def get_full_dna_values(self, item):
         sp.set_type(item, sp.TNat)
 
-        dna = sp.local('dna2', self.data.dna[item])
-        spl = sp.local('spl2', self.split(dna.value, '_'))
-        ret = sp.local('ret2', sp.map())
+        dna = sp.local('dna', self.data.dna[item])
+        spl = sp.local('spl', self.split(dna.value, '_'))
+        ret = sp.local('ret', sp.map())
 
-        i = sp.local('i2', 0)
-        with sp.for_ ('xx', spl.value) as x:
+        i = sp.local('i', 0)
+        with sp.for_ ('x', spl.value) as x:
             ret.value[self.data.config.pieces[i.value]] = self.data.traits[self.data.config.pieces[i.value]][x]
 
             i.value = i.value + 1
@@ -375,12 +375,12 @@ class GogoDNARegistry(sp.Contract):
             vals=sp.TSet(sp.TString),
         ))
 
-        dna = sp.local('dna3', self.data.dna[params.token])
-        spl = sp.local('spl3', self.split(dna.value, '_'))
-        ret = sp.local('ret3', sp.map())
+        dna = sp.local('dna', self.data.dna[params.token])
+        spl = sp.local('spl', self.split(dna.value, '_'))
+        ret = sp.local('ret', sp.map())
 
-        i = sp.local('i3', 0)
-        with sp.for_ ('xx', spl.value) as x:
+        i = sp.local('i', 0)
+        with sp.for_ ('x', spl.value) as x:
             ret.value[self.data.config.pieces[i.value]] = x
 
             i.value = i.value + 1
@@ -400,8 +400,8 @@ class GogoDNARegistry(sp.Contract):
     def is_mythic(self, item):
         sp.set_type(item, sp.TNat)
 
-        dna = sp.local('dna4', self.data.dna[item])
-        spl = sp.local('spl4', self.split(dna.value, '_'))
+        dna = sp.local('dna', self.data.dna[item])
+        spl = sp.local('spl', self.split(dna.value, '_'))
 
         with sp.match_cons(spl.value) as x:
             sp.result(self.data.config.mythics.contains(x.head))

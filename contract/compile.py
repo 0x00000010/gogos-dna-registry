@@ -14,8 +14,8 @@ admin = Env.Env_config.admin
 tzip16 = Env.Env_config.tzip16
 
 sp.add_compilation_target(
-    'GogoDNARegistry_comp',
-    Registry.GogoDNARegistry(
+    'DNARegistry_comp',
+    Registry.DNARegistry(
         admin = admin,
         metadata = tzip16,
     )

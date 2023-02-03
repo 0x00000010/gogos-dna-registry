@@ -3,7 +3,7 @@
 # pass in the env name to this command
 COMP_NETWORK=$1
 
-TARGET="GogoDNARegistry_comp"
+TARGET="DNARegistry_comp"
 OUTPUT_DIR=compile/registry
 
 if [ ! -f "$COMP_NETWORK".env ]; then
