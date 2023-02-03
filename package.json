@@ -8,7 +8,7 @@
     "url": "git+https://github.com/0x00000010/gogos-dna-registry.git"
   },
   "keywords": [
-    "gogos"
+    "gogos", "tezos", "dna"
   ],
   "author": "0x10",
   "license": "SEE LICENSE IN LICENSE.md",
