@@ -12,7 +12,7 @@ def setup_test_env():
     user = sp.test_account("user")
     admin = sp.test_account("admin")
 
-    registryContract = Registry.GogoDNARegistry(
+    registryContract = Registry.DNARegistry(
         admin=admin.address,
         metadata = sp.utils.metadata_of_url("ipfs://bafkreiagzew46z4yfyhj6rxf4i73sxdc5d3cghrvjsyfzy3bjri4g75nba"),
     )
@@ -171,6 +171,13 @@ def test_registry():
 
     # Lock the DNA (succeed as admin)
     env['contract'].lock().run(sender=admin)
+
+    # Try change DNA as admin and fail
+    scenario += env['contract'].set_dna(
+        [
+            (3, '0_1_2_3_4_5_4_3_2_1'),
+        ]
+    ).run(sender=admin,valid=False,exception='REGISTRY_LOCKED')
 
     # Try add DNA as admin and fail
     scenario += env['contract'].set_dna(
