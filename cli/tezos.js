@@ -27,8 +27,6 @@ export const getTezosLedger = async () => {
 
     const publicKey = await tezos.signer.publicKey()
     const publicKeyHash = await tezos.signer.publicKeyHash()
-
-    await importKey(tezos, publicKey)
   } else {
     // faucet deploys like ghostnet use COMP_ADMIN_KEY env value
     await importKey(tezos, config.adminKey)
