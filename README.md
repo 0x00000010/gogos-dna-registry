@@ -1,6 +1,6 @@
 # GOGOs DNA Registry
 
-This contract stores the DNA information for GOGOs. When GOGOs were released there was no such thing as an "on-chain view" on Tezos and having this information available on-chain is a key part of the long-term GOGOs development goals.
+This contract stores the DNA information for GOGOs. When GOGOs were released there was no such thing as an "on-chain view" on Tezos. The Tezos blockchain has evolved since, and making this information available on-chain is a key part of the long-term GOGOs development goals.
 
 This repository creates a contract that provides a set of on-chain views regarding the unique DNA string associated with each GOGO.
 
@@ -10,8 +10,8 @@ This contract brings additional metadata on-chain that complements and subtly au
 
 ## Contract Address
 
-Mainnet:
-Ghostnet: KT1HDzMoKPK75p4jYL4oVivP3yfJr138cq7e
+- Mainnet:
+- Ghostnet: KT1LR44SnJHMHs169t3A4dFR2Hp26syYfd2t
 
 ### Differences from GOGOs TZIP21 / off-chain meta
 
@@ -21,11 +21,17 @@ The DNA values represents the "before" generation state of the GOGOs, and the fi
 
 The main difference is that the DNA shows what's in the *left* hand _even if the left hand is out of the frame_, and the off-chain meta also shows details of the "tool" which the on-chain DNA does not keep track of and represents so-called _hidden traits_ for GOGOs where you cannot see their left hand.
 
-GOGOs selected their own "tools" (if any) as seen in the TZIP21 metadata at the end of their generation function and their input DNA did not impact their choice of tool, meaning the DNA does not show what is in the GOGOs *right* hand.
+GOGOs selected their own "tools" (if any) seen in the TZIP21 metadata at the end of their generation function and their input DNA did not impact their choice of tool, meaning the DNA does not show what is in the GOGOs *right* hand. This was intended to give each GOGO the concept of free will and choices they had to make while they were being generated.
 
-The DNA also does not track or dictate the "background" or "stress" values as these are the results of the GOGOs lived experience and outside of the control of their DNA. These values are available in the off-chain TZIP-21 metadata.
+The DNA also does not track or dictate the "background" or "stress" values as these are the results of the GOGOs lived experience while being generated and outside of the control of their input DNA. These values are available in the off-chain TZIP-21 metadata.
 
 Meteor and UFO traits are intentionally untracked both on and off-chain to add a bit of spice.
+
+### Intentionally duplicate traits
+
+GOGOs sometimes have intentionally duplicate trait names that differ visually, such as the "OK" hand (4 variants) and "black" or "blue" hair (multiple variants) that were designed alongside untracked visual traits like meteors and abstract traits like stress to subtly disrupt the standard rarity ranking process when they were released.
+
+Take this into consideration when integrating.
 
 ### Usage
 
@@ -142,7 +148,7 @@ If you own or manage an existing Tezos FA2 collection you may use this repositor
 
 You only need to deploy this if you need to access trait information about a specific collection on-chain inside other contracts, or if you want to make this information available to other third-parties on-chain.
 
-Priming the DNA data is a very expensive operation, and costs about 0.01tz per DNA entry, meaning seeding the GOGOs DNA (5555 pieces) to mainnet costs around 55tz split across multiple batch operations. This only has to be done once though.
+Priming the DNA data is a very expensive operation, and costs about 0.0075tz per DNA entry, meaning seeding the GOGOs DNA (5555 pieces) to mainnet costs around 42tz split across 7 batch operations. This only has to be done once though.
 
 If you're deploying your own DNA library then you need to modify the contract with your specific configuration, and generate new `dna.json` files that map your token traits exactly.
 
@@ -153,10 +159,10 @@ The traits are hard-coded at contract origination and there are no entrypoints t
 When modifying this for your own collection you must make changes to the `contract/dna_registry.py` file.
 
 - Set your own metadata in the metadata_base value
-- Define the exact `length` of your dna string
-- Define the trait `pieces` and their order in the dna sequence
-- Define the map for each dna trait to the available trait values
-- Define your `mythic` dna markers
+- Define the exact `length` of your DNA string
+- Define the trait `pieces` and their order in the DNA sequence
+- Define the map for each DNA trait to the available trait values
+- Define your `mythic` DNA markers
 
 You must also configure your environment with the correct wallet, key etc. and must create your own DNA mapping based on your collection traits and associated   `dna/dna.json` file.
 
@@ -186,13 +192,13 @@ The `compile.sh` file will call the `cli/originate.js` file - do not call this f
 
 This will not register any DNA it just compiles and originates a new contract.
 
-#### Ledger (mainnet) vs Faucet (ghostnet) Deployments
+#### Ledger (mainnet) vs Faucet (testnet) Deployments
 
 If the COMP_USE_LEDGER value is set to 0 (e.g. non-mainnet deployments like ghostnet) will use whatever the `COMP_ADMIN_KEY` value in the env file is when originating. You can get this value from a testnet wallet faucet file.
 
 If the COMP_USE_LEDGER value is set to 1 then this key is ignored during origination and you will need to check your connected ledger and approve each transaction there. You must make sure the `COMP_ADMIN` wallet address matches the ledger, and the correct `COMP_LEDGER_PATH` is set in your env file (default wallet for Tezos on ledger is `44'/1729'/0'/0` and subsequent wallets created in ledger live are `44'/1729'/1'/0` then `44'/1729'/2'/0` etc)
 
-All `mainnet` deployments should happen through a ledger hardware wallet only.
+All `mainnet` deployments should happen through a ledger hardware wallet only and you should deploy to `ghostnet` using the same wallet you will deploy to `mainnet` (i.e. through your ledger)
 
 #### NFT.storage Requirement
 
