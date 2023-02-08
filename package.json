@@ -17,10 +17,10 @@
   },
   "homepage": "https://github.com/0x00000010/gogos-dna-registry#readme",
   "dependencies": {
-    "@ledgerhq/hw-transport-node-hid": "^6.27.9",
-    "@taquito/ledger-signer": "^15.0.1",
-    "@taquito/signer": "^15.0.1",
-    "@taquito/taquito": "^15.0.1",
-    "@taquito/tzip16": "^15.0.1"
+    "@ledgerhq/hw-transport-node-hid": "^6.27.11",
+    "@taquito/ledger-signer": "^15.1.0",
+    "@taquito/signer": "^15.1.0",
+    "@taquito/taquito": "^15.1.0",
+    "@taquito/tzip16": "^15.1.0"
   }
 }
