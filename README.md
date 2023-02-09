@@ -37,6 +37,8 @@ Take this into consideration when integrating.
 
 The contract adds the following on-chain views. You pass in the ID of the GOGO you want to query along with any additional options if the view requires it.
 
+You can interact with the views directly on BCD: https://better-call.dev/mainnet/KT1A18hiVawYcKDHyZ4JzToziq1nb6XhVJ1S/views
+
 #### Get DNA Config
 
 `get_dna_config()`
