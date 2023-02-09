@@ -158,7 +158,7 @@ The traits are hard-coded at contract origination and there are no entrypoints t
 
 When modifying this for your own collection you must make changes to the `contract/dna_registry.py` file.
 
-- Set your own metadata in the metadata_base value
+- Set your own metadata in the `metadata_base` value
 - Define the exact `length` of your DNA string
 - Define the trait `pieces` and their order in the DNA sequence
 - Define the map for each DNA trait to the available trait values
