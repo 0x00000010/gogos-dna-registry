@@ -10,7 +10,7 @@ This contract brings additional metadata on-chain that complements and subtly au
 
 ## Contract Address
 
-- Mainnet:
+- Mainnet: KT1A18hiVawYcKDHyZ4JzToziq1nb6XhVJ1S
 - Ghostnet: KT1LR44SnJHMHs169t3A4dFR2Hp26syYfd2t
 
 ### Differences from GOGOs TZIP21 / off-chain meta
